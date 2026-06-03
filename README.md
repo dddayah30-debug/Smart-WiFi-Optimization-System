@@ -3,25 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart WiFi Optimization System - Interface Prototype</title>
+    <title>Smart WiFi Optimization System - Live Prototype</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(180px); }
+            100% { transform: translateY(0); }
+        }
+        .animate-scan {
+            animation: scan 4s linear infinite;
+        }
+        .pulse-slow {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
 </head>
-<body class="bg-[#0b0f19] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-center items-center p-4 md:p-8">
+<body class="bg-[#070a13] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-center items-center p-4">
 
-    <!-- Interactive Workspace Container -->
-    <div class="w-full max-w-4xl bg-[#131a2e] rounded-3xl p-6 md:p-8 border border-slate-800 shadow-2xl">
+    <div class="w-full max-w-4xl bg-[#111827] rounded-3xl p-6 md:p-8 border border-slate-800 shadow-2xl">
         <div class="grid md:grid-cols-12 gap-8 items-center">
             
-            <!-- COLUMN 1: SMARTPHONE MOCKUP SCREEN DISPLAY (5 Columns) -->
             <div class="md:col-span-5 flex justify-center">
-                <!-- Outer Phone Frame -->
-                <div class="w-[290px] h-[570px] bg-[#070a13] rounded-[40px] border-[6px] border-blue-600 shadow-[0_0_35px_rgba(37,99,235,0.25)] relative p-3 flex flex-col justify-between overflow-hidden">
+                <div class="w-[290px] h-[570px] bg-[#030712] rounded-[42px] border-[6px] border-slate-800 shadow-[0_0_40px_rgba(37,99,235,0.15)] relative p-3 flex flex-col justify-between overflow-hidden group">
                     
-                    <!-- Dynamic Top Status Bar & Notch -->
-                    <div class="absolute top-0 inset-x-0 h-6 bg-[#070a13] z-30 flex justify-between items-center px-6 text-[10px] font-mono text-slate-400">
+                    <div class="absolute top-0 inset-x-0 h-6 bg-[#030712] z-40 flex justify-between items-center px-6 text-[9px] font-mono text-slate-400 pointer-events-none">
                         <span>9:41</span>
-                        <div class="w-20 h-4 bg-black rounded-b-xl absolute left-1/2 -translate-x-1/2 top-0"></div>
+                        <div class="w-24 h-4 bg-black rounded-b-xl absolute left-1/2 -translate-x-1/2 top-0"></div>
                         <div class="flex items-center space-x-1">
                             <i class="fa-solid fa-signal"></i>
                             <i class="fa-solid fa-wifi text-blue-400"></i>
@@ -29,85 +38,82 @@
                         </div>
                     </div>
                     
-                    <!-- App Interactive Interface Port -->
-                    <div id="interface-viewport" class="h-full flex flex-col justify-between pt-6 pb-1 transition-all duration-200">
-                        
-                        <!-- DEFAULT INTERFACE: SCREEN 1 (Automated Optimization) -->
-                        <div class="flex flex-col justify-between h-full animate-fadeIn">
+                    <div id="phone-screen" class="h-full flex flex-col justify-between pt-6 pb-8 transition-all duration-300">
+                        <div id="screen-content" class="flex flex-col justify-between h-full">
+                            
                             <div class="text-center mt-3">
-                                <h4 class="font-bold text-sm tracking-wide text-slate-200"> Smart WiFi Optimization System</h4>
+                                <h4 class="font-bold text-xs tracking-wider text-slate-200">WiFi Optimizer</h4>
                                 <p class="text-[9px] font-semibold text-blue-400 tracking-wider uppercase mt-0.5">
                                     <i class="fa-solid fa-building-columns mr-1"></i> Kolej Pendeta Za'ba (KPZ)
                                 </p>
                             </div>
                             
-                            <!-- Optimization Radial Progress Gauge -->
-                            <div class="flex flex-col items-center justify-center my-auto">
-                                <div class="relative w-36 h-36 flex items-center justify-center">
+                            <div class="flex flex-col items-center justify-center my-auto relative">
+                                <div id="radial-container" class="relative w-36 h-36 flex items-center justify-center cursor-pointer active:scale-95 transition-transform duration-150" onclick="triggerOptimization()">
                                     <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                                        <circle cx="50" cy="50" r="42" stroke="#161f38" stroke-width="7" fill="transparent" />
-                                        <circle cx="50" cy="50" r="42" stroke="#10b981" stroke-width="7" fill="transparent" stroke-dasharray="230 264" stroke-linecap="round" />
+                                        <circle cx="50" cy="50" r="42" stroke="#1f2937" stroke-width="6" fill="transparent" />
+                                        <circle id="progress-bar" cx="50" cy="50" r="42" stroke="#10b981" stroke-width="6" fill="transparent" stroke-dasharray="230 264" stroke-linecap="round" class="transition-all duration-1000" />
                                     </svg>
-                                    <div class="absolute text-center">
-                                        <span class="text-3xl font-black block text-white tracking-tighter">95%</span>
-                                        <span class="text-[8px] text-emerald-400 font-bold tracking-widest uppercase">OPTIMIZED</span>
+                                    <div class="absolute text-center select-none">
+                                        <span id="gauge-percent" class="text-3xl font-black block text-white tracking-tighter">95%</span>
+                                        <span id="gauge-status" class="text-[8px] text-emerald-400 font-bold tracking-widest uppercase">OPTIMIZED</span>
                                     </div>
+                                </div>
+                                <p class="text-[9px] text-slate-500 mt-2 pointer-events-none animate-pulse">👇 Tap circle to recalibrate</p>
+                            </div>
+
+                            <div class="space-y-2">
+                                <div id="log-card" class="bg-slate-900/90 p-3 rounded-xl text-[11px] border border-slate-800 shadow-inner min-h-[75px] flex flex-col justify-center">
+                                    <div class="flex justify-between items-center mb-0.5">
+                                        <span class="font-bold text-slate-300">Channel Monitor</span>
+                                        <span id="log-status-dot" class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                    </div>
+                                    <p id="log-text" class="text-slate-400 text-[10px] leading-tight">System managing micro-channels dynamically. Line clear.</p>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-1.5 pt-1">
+                                    <button onclick="changeAppTab('ar')" class="bg-slate-900 border border-slate-800 hover:bg-slate-800 active:scale-95 transition text-[10px] py-1.5 rounded-lg text-slate-300 font-medium">
+                                        <i class="fa-solid fa-camera mr-1 text-purple-400"></i> AR View
+                                    </button>
+                                    <button onclick="changeAppTab('map')" class="bg-slate-900 border border-slate-800 hover:bg-slate-800 active:scale-95 transition text-[10px] py-1.5 rounded-lg text-slate-300 font-medium">
+                                        <i class="fa-solid fa-map-location-dot mr-1 text-emerald-400"></i> Density Map
+                                    </button>
                                 </div>
                             </div>
 
-                            <!-- Real-time Event Logger Card -->
-                            <div class="space-y-3">
-                                <div class="bg-[#161f38] p-3 rounded-xl text-[11px] border border-slate-800/60 shadow-inner">
-                                    <div class="flex justify-between items-center mb-1">
-                                        <span class="font-bold text-slate-300">Congestion Engine</span>
-                                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                                    </div>
-                                    <p class="text-slate-400 leading-tight">Channel 11 interference detected from adjacent dorm rooms.</p>
-                                    <div class="text-emerald-400 font-bold mt-1.5 flex items-center">
-                                        <i class="fa-solid fa-shuffle mr-1.5 text-[10px]"></i> Auto-switched to Channel 1 (Clear)
-                                    </div>
-                                </div>
-                                <button class="w-full bg-blue-600 active:scale-[0.98] text-white font-bold text-xs py-2.5 rounded-xl transition shadow-md tracking-wide">
-                                    Force Recalibration
-                                </button>
-                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>
 
-            <!-- COLUMN 2: INTERACTIVE BACKEND CONTROLLERS (7 Columns) -->
             <div class="md:col-span-7 space-y-4">
-                <div class="mb-4">
-                    <h2 class="text-xl font-bold text-white tracking-wide">System Mockup Controls</h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Click the functions below to change the application layout simulation live inside the smartphone view frame.</p>
+                <div class="mb-2">
+                    <span class="text-[10px] font-bold tracking-widest text-blue-500 bg-blue-500/10 px-2.5 py-1 rounded-md border border-blue-500/20 uppercase">Interactive Pitch Module</span>
+                    <h2 class="text-xl font-bold text-white tracking-wide mt-2">UKM WiFi Optimization Deck</h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Test real-time operations directly on the viewport device profile container framework layout.</p>
                 </div>
 
-                <!-- Controller Button 1 -->
-                <button onclick="renderMockup('screen1')" id="tab-screen1" class="w-full text-left p-4 rounded-xl bg-[#1c2641] border border-blue-500/60 transition-all flex items-center space-x-4 shadow-md">
-                    <div class="w-10 h-10 rounded-lg bg-blue-600/10 flex items-center justify-center text-blue-400 font-bold"><i class="fa-solid fa-gauge-high"></i></div>
+                <button onclick="changeAppTab('dashboard')" id="deck-tab-dashboard" class="w-full text-left p-4 rounded-xl bg-slate-800/80 border border-blue-500/40 transition-all flex items-center space-x-4 shadow-md">
+                    <div class="w-9 h-9 rounded-lg bg-blue-600/10 flex items-center justify-center text-blue-400 font-bold text-sm"><i class="fa-solid fa-gauge-high"></i></div>
                     <div>
-                        <h4 class="font-bold text-sm text-white">Screen 1: Automated Optimization</h4>
-                        <p class="text-xs text-slate-400 mt-0.5">Simulates background detection and micro-channel switching tasks on student devices.</p>
+                        <h4 class="font-bold text-xs text-white">Module 1: Channel Calibration Dashboard</h4>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Simulates automatic hardware configuration background actions inside dormitory environments.</p>
                     </div>
                 </button>
 
-                <!-- Controller Button 2 -->
-                <button onclick="renderMockup('screen2')" id="tab-screen2" class="w-full text-left p-4 rounded-xl bg-slate-900/30 border border-slate-800 hover:border-slate-700/60 transition-all flex items-center space-x-4">
-                    <div class="w-10 h-10 rounded-lg bg-purple-600/10 flex items-center justify-center text-purple-400 font-bold"><i class="fa-solid fa-vr-cardboard"></i></div>
+                <button onclick="changeAppTab('ar')" id="deck-tab-ar" class="w-full text-left p-4 rounded-xl bg-slate-900/40 border border-slate-800 hover:border-slate-700/50 transition-all flex items-center space-x-4">
+                    <div class="w-9 h-9 rounded-lg bg-purple-600/10 flex items-center justify-center text-purple-400 font-bold text-sm"><i class="fa-solid fa-vr-cardboard"></i></div>
                     <div>
-                        <h4 class="font-bold text-sm text-slate-400">Screen 2: AR Signal Boundary Guide</h4>
-                        <p class="text-xs text-slate-400 mt-0.5">Demonstrates camera overlay scanning to pinpoint physical dead zones vs clear zones inside a hostel unit.</p>
+                        <h4 class="font-bold text-xs text-slate-400">Module 2: AR Signal Boundary Layout</h4>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Triggers simulated smartphone camera tracking lines over spatial unit vectors to avoid dead zones.</p>
                     </div>
                 </button>
 
-                <!-- Controller Button 3 -->
-                <button onclick="renderMockup('screen3')" id="tab-screen3" class="w-full text-left p-4 rounded-xl bg-slate-900/30 border border-slate-800 hover:border-slate-700/60 transition-all flex items-center space-x-4">
-                    <div class="w-10 h-10 rounded-lg bg-emerald-600/10 flex items-center justify-center text-emerald-400 font-bold"><i class="fa-solid fa-network-wired"></i></div>
+                <button onclick="changeAppTab('map')" id="deck-tab-map" class="w-full text-left p-4 rounded-xl bg-slate-900/40 border border-slate-800 hover:border-slate-700/50 transition-all flex items-center space-x-4">
+                    <div class="w-9 h-9 rounded-lg bg-emerald-600/10 flex items-center justify-center text-emerald-400 font-bold text-sm"><i class="fa-solid fa-network-wired"></i></div>
                     <div>
-                        <h4 class="font-bold text-sm text-slate-400">Screen 3: Campus Density Traffic Grid</h4>
-                        <p class="text-xs text-slate-400 mt-0.5">Exhibits real-time crowdsourced congestion status maps across major student focal hubs (PTSL, Pusanika).</p>
+                        <h4 class="font-bold text-xs text-slate-400">Module 3: Real-Time Grid Crowd-Map</h4>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Exhibits internal crowdsourced metrics framework across academic library blocks and community centers.</p>
                     </div>
                 </button>
             </div>
@@ -115,149 +121,197 @@
         </div>
     </div>
 
-    <!-- JavaScript to Handle Dynamic Mockup Rendering -->
     <script>
-        function renderMockup(screenType) {
-            const viewport = document.getElementById('interface-viewport');
-            
-            // Clean up all controller states
-            ['screen1', 'screen2', 'screen3'].forEach(s => {
-                const button = document.getElementById(`tab-${s}`);
-                button.className = "w-full text-left p-4 rounded-xl bg-slate-900/30 border border-slate-800 hover:border-slate-700/60 transition-all flex items-center space-x-4";
-                button.querySelector('h4').className = "font-bold text-sm text-slate-400";
+        let isOptimizing = false;
+
+        function updateDeckControls(activeType) {
+            ['dashboard', 'ar', 'map'].forEach(type => {
+                const button = document.getElementById(`deck-tab-${type}`);
+                button.className = "w-full text-left p-4 rounded-xl bg-slate-900/40 border border-slate-800 hover:border-slate-700/50 transition-all flex items-center space-x-4";
+                button.querySelector('h4').className = "font-bold text-xs text-slate-400";
             });
 
-            // Apply selected controller styling
-            const targetButton = document.getElementById(`tab-${screenType}`);
-            if (screenType === 'screen1') {
-                targetButton.className = "w-full text-left p-4 rounded-xl bg-[#1c2641] border border-blue-500/60 transition-all flex items-center space-x-4 shadow-md";
-            } else if (screenType === 'screen2') {
-                targetButton.className = "w-full text-left p-4 rounded-xl bg-[#1c2641] border border-purple-500/60 transition-all flex items-center space-x-4 shadow-md";
-            } else if (screenType === 'screen3') {
-                targetButton.className = "w-full text-left p-4 rounded-xl bg-[#1c2641] border border-emerald-500/60 transition-all flex items-center space-x-4 shadow-md";
+            const currentActive = document.getElementById(`deck-tab-${activeType}`);
+            if (activeType === 'dashboard') {
+                currentActive.className = "w-full text-left p-4 rounded-xl bg-slate-800/80 border border-blue-500/40 transition-all flex items-center space-x-4 shadow-md";
+            } else if (activeType === 'ar') {
+                currentActive.className = "w-full text-left p-4 rounded-xl bg-slate-800/80 border border-purple-500/40 transition-all flex items-center space-x-4 shadow-md";
+            } else if (activeType === 'map') {
+                currentActive.className = "w-full text-left p-4 rounded-xl bg-slate-800/80 border border-emerald-500/40 transition-all flex items-center space-x-4 shadow-md";
             }
-            targetButton.querySelector('h4').className = "font-bold text-sm text-white";
+            currentActive.querySelector('h4').className = "font-bold text-xs text-white";
+        }
 
-            // Inject Interface layouts directly without standard prose text wrappers
-            if (screenType === 'screen1') {
+        function changeAppTab(targetView) {
+            const viewport = document.getElementById('phone-screen');
+            updateDeckControls(targetView);
+
+            if (targetView === 'dashboard') {
                 viewport.innerHTML = `
-                    <div class="flex flex-col justify-between h-full animate-fadeIn">
+                    <div id="screen-content" class="flex flex-col justify-between h-full">
                         <div class="text-center mt-3">
-                            <h4 class="font-bold text-sm tracking-wide text-slate-200">WiFi Optimization System</h4>
-                            <p class="text-[9px] font-semibold text-blue-400 tracking-wider uppercase mt-0.5">
-                                <i class="fa-solid fa-building-columns mr-1"></i> Kolej Keris Mas (KKM)
-                            </p>
+                            <h4 class="font-bold text-xs tracking-wider text-slate-200">WiFi Optimizer</h4>
+                            <p class="text-[9px] font-semibold text-blue-400 tracking-wider uppercase mt-0.5"><i class="fa-solid fa-building-columns mr-1"></i> Kolej Pendeta Za'ba (KPZ)</p>
                         </div>
-                        <div class="flex flex-col items-center justify-center my-auto">
-                            <div class="relative w-36 h-36 flex items-center justify-center">
+                        <div class="flex flex-col items-center justify-center my-auto relative">
+                            <div id="radial-container" class="relative w-36 h-36 flex items-center justify-center cursor-pointer active:scale-95 transition-transform duration-150" onclick="triggerOptimization()">
                                 <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                                    <circle cx="50" cy="50" r="42" stroke="#161f38" stroke-width="7" fill="transparent" />
-                                    <circle cx="50" cy="50" r="42" stroke="#10b981" stroke-width="7" fill="transparent" stroke-dasharray="230 264" stroke-linecap="round" />
+                                    <circle cx="50" cy="50" r="42" stroke="#1f2937" stroke-width="6" fill="transparent" />
+                                    <circle id="progress-bar" cx="50" cy="50" r="42" stroke="#10b981" stroke-width="6" fill="transparent" stroke-dasharray="230 264" stroke-linecap="round" />
                                 </svg>
-                                <div class="absolute text-center">
-                                    <span class="text-3xl font-black block text-white tracking-tighter">95%</span>
-                                    <span class="text-[8px] text-emerald-400 font-bold tracking-widest uppercase">OPTIMIZED</span>
+                                <div class="absolute text-center select-none">
+                                    <span id="gauge-percent" class="text-3xl font-black block text-white tracking-tighter">95%</span>
+                                    <span id="gauge-status" class="text-[8px] text-emerald-400 font-bold tracking-widest uppercase">OPTIMIZED</span>
                                 </div>
                             </div>
+                            <p class="text-[9px] text-slate-500 mt-2 pointer-events-none animate-pulse">👇 Tap circle to recalibrate</p>
                         </div>
-                        <div class="space-y-3">
-                            <div class="bg-[#161f38] p-3 rounded-xl text-[11px] border border-slate-800/60 shadow-inner">
-                                <div class="flex justify-between items-center mb-1">
-                                    <span class="font-bold text-slate-300">Congestion Engine</span>
-                                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <div class="space-y-2">
+                            <div id="log-card" class="bg-slate-900/90 p-3 rounded-xl text-[11px] border border-slate-800 shadow-inner min-h-[75px] flex flex-col justify-center">
+                                <div class="flex justify-between items-center mb-0.5">
+                                    <span class="font-bold text-slate-300">Channel Monitor</span>
+                                    <span id="log-status-dot" class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                                 </div>
-                                <p class="text-slate-400 leading-tight">Channel 11 interference detected from adjacent dorm rooms.</p>
-                                <div class="text-emerald-400 font-bold mt-1.5 flex items-center">
-                                    <i class="fa-solid fa-shuffle mr-1.5 text-[10px]"></i> Auto-switched to Channel 1 (Clear)
-                                </div>
+                                <p id="log-text" class="text-slate-400 text-[10px] leading-tight">System managing micro-channels dynamically. Line clear.</p>
                             </div>
-                            <button class="w-full bg-blue-600 text-white font-bold text-xs py-2.5 rounded-xl shadow-md tracking-wide">Force Recalibration</button>
+                            <div class="grid grid-cols-2 gap-1.5 pt-1">
+                                <button onclick="changeAppTab('ar')" class="bg-slate-900 border border-slate-800 text-[10px] py-1.5 rounded-lg text-slate-300 font-medium"><i class="fa-solid fa-camera mr-1 text-purple-400"></i> AR View</button>
+                                <button onclick="changeAppTab('map')" class="bg-slate-900 border border-slate-800 text-[10px] py-1.5 rounded-lg text-slate-300 font-medium"><i class="fa-solid fa-map-location-dot mr-1 text-emerald-400"></i> Density Map</button>
+                            </div>
                         </div>
                     </div>
                 `;
-            } else if (screenType === 'screen2') {
+            } else if (targetView === 'ar') {
                 viewport.innerHTML = `
-                    <div class="flex flex-col justify-between h-full relative animate-fadeIn bg-slate-900 rounded-2xl overflow-hidden p-2 border border-slate-800">
-                        <!-- Camera Viewport Guideline Mesh Overlay -->
-                        <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-[size:16px_16px]"></div>
+                    <div class="flex flex-col justify-between h-full relative bg-slate-950 rounded-2xl overflow-hidden p-2 border border-slate-800">
+                        <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-[size:14px_14px]"></div>
+                        <div class="absolute inset-x-0 top-12 h-0.5 bg-purple-500/30 animate-scan z-20 shadow-md"></div>
                         
-                        <div class="relative z-10 bg-black/60 backdrop-blur-sm p-1.5 rounded-lg text-center border border-purple-500/20 text-[9px]">
-                            <p class="text-purple-400 font-bold"><i class="fa-solid fa-camera mr-1"></i> AR CALIBRATION HOUSING MODE</p>
+                        <div class="relative z-10 bg-black/70 p-1.5 rounded-lg text-center border border-purple-500/20 text-[8px] tracking-wider">
+                            <p class="text-purple-400 font-bold"><i class="fa-solid fa-expand mr-1"></i> AR CALIBRATION HOUSING SENSOR</p>
                         </div>
 
-                        <!-- AR Entity 1: Weak Zone Placement -->
-                        <div class="absolute bottom-24 left-4 z-10 flex flex-col items-center">
-                            <div class="w-16 h-16 rounded-full bg-red-500/20 border border-red-500/80 flex items-center justify-center relative text-center">
-                                <span class="text-[8px] font-bold text-white tracking-wide leading-tight">RED ZONE<br><span class="text-red-300 text-[7px] font-normal">Blocked</span></span>
+                        <div onclick="toggleZoneDesc('red')" class="absolute bottom-28 left-6 z-30 flex flex-col items-center cursor-pointer group/node">
+                            <div class="w-14 h-14 rounded-full bg-red-500/20 border border-red-500/80 flex items-center justify-center relative text-center active:scale-90 transition shadow-lg">
+                                <span class="text-[8px] font-bold text-white tracking-wide">RED ZONE</span>
                             </div>
                         </div>
 
-                        <!-- AR Entity 2: Optimal Zone Suggestion Placement -->
-                        <div class="absolute top-24 right-4 z-10 flex flex-col items-center">
-                            <div class="w-20 h-20 rounded-full bg-emerald-500/20 border border-emerald-500/80 flex items-center justify-center text-center px-1 relative">
-                                <span class="text-[9px] font-bold text-white tracking-wide leading-tight">GREEN ZONE<br><span class="text-emerald-300 text-[7px] font-semibold">Optimal desk placement</span></span>
-                                <div class="absolute -inset-1 rounded-full border border-emerald-400/40 animate-ping"></div>
+                        <div onclick="toggleZoneDesc('green')" class="absolute top-24 right-6 z-30 flex flex-col items-center cursor-pointer group/node">
+                            <div class="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/80 flex items-center justify-center text-center relative active:scale-90 transition shadow-lg">
+                                <span class="text-[8px] font-bold text-white tracking-wide leading-tight">GREEN ZONE<br><span class="text-emerald-300 text-[7px] font-semibold">Clear Area</span></span>
+                                <div class="absolute -inset-1 rounded-full border border-emerald-400/30 animate-ping"></div>
                             </div>
                         </div>
 
-                        <div class="relative z-10 bg-black/80 p-2 rounded-xl text-center text-[9px] border border-slate-800">
-                            <p class="text-slate-300">Point at room structures to calibrate signal lines</p>
+                        <div class="relative z-10 bg-black/90 p-2 rounded-xl text-center text-[9px] border border-slate-800 min-h-[42px] flex items-center justify-center">
+                            <p id="ar-descriptor" class="text-slate-300 transition-all duration-150">Point device camera at room corners. Tap zones to filter.</p>
                         </div>
                     </div>
                 `;
-            } else if (screenType === 'screen3') {
+            } else if (targetView === 'map') {
                 viewport.innerHTML = `
-                    <div class="flex flex-col justify-between h-full animate-fadeIn">
+                    <div class="flex flex-col justify-between h-full">
                         <div class="text-center mt-3">
-                            <h4 class="font-bold text-sm tracking-wide text-slate-200">Campus Density Index</h4>
-                            <p class="text-[9px] font-bold text-emerald-400 tracking-wider uppercase mt-0.5">UKM INTERNAL WiFi SYNC</p>
+                            <h4 class="font-bold text-xs tracking-wider text-slate-200">UKM Density Grid</h4>
+                            <p class="text-[8px] font-bold text-emerald-400 tracking-wider uppercase mt-0.5">Crowdsourced Channel Map</p>
                         </div>
                         
-                        <!-- Simulated Real-time Metrics Stack -->
-                        <div class="space-y-2 my-auto px-0.5">
-                            <div class="bg-slate-900/90 p-2 rounded-xl border border-red-500/20 flex justify-between items-center text-[11px]">
+                        <div class="space-y-2 my-auto px-1">
+                            <div onclick="showGridLog('ptsl')" class="bg-slate-900/90 p-2 rounded-xl border border-slate-800 hover:border-red-500/30 cursor-pointer active:scale-[0.99] transition flex justify-between items-center text-[10px]">
                                 <div>
                                     <p class="font-bold text-slate-200">Perpustakaan PTSL</p>
-                                    <p class="text-[8px] text-slate-400">High node count saturated</p>
+                                    <p class="text-[8px] text-slate-500">Saturation high index</p>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-red-500/10 text-red-400 font-mono text-[8px] border border-red-500/20 font-bold">CONGESTED</span>
+                                <span class="px-1.5 py-0.5 rounded bg-red-500/10 text-red-400 font-mono text-[8px] border border-red-500/20 font-bold">SESAK 🔴</span>
                             </div>
 
-                            <div class="bg-slate-900/90 p-2 rounded-xl border border-yellow-500/20 flex justify-between items-center text-[11px]">
+                            <div onclick="showGridLog('pusanika')" class="bg-slate-900/90 p-2 rounded-xl border border-slate-800 hover:border-yellow-500/30 cursor-pointer active:scale-[0.99] transition flex justify-between items-center text-[10px]">
                                 <div>
                                     <p class="font-bold text-slate-200">Pusanika Hub</p>
-                                    <p class="text-[8px] text-slate-400">Moderate system loads</p>
+                                    <p class="text-[8px] text-slate-500">Balanced dynamic load</p>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-yellow-500/10 text-yellow-400 font-mono text-[8px] border border-yellow-500/20 font-bold">MODERATE</span>
+                                <span class="px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-400 font-mono text-[8px] border border-yellow-500/20 font-bold">SEDERHANA 🟡</span>
                             </div>
 
-                            <div class="bg-slate-900/90 p-2 rounded-xl border border-emerald-500/20 flex justify-between items-center text-[11px]">
+                            <div onclick="showGridLog('ftsm')" class="bg-slate-900/90 p-2 rounded-xl border border-slate-800 hover:border-emerald-500/30 cursor-pointer active:scale-[0.99] transition flex justify-between items-center text-[10px]">
                                 <div>
-                                    <p class="font-bold text-slate-200">Fakulti (FTSM / FST)</p>
-                                    <p class="text-[8px] text-slate-400">Clear channel bandwidth</p>
+                                    <p class="font-bold text-slate-200">Fakulti FTSM / FST</p>
+                                    <p class="text-[8px] text-slate-500">Channel structural nodes open</p>
                                 </div>
-                                <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-mono text-[8px] border border-emerald-500/20 font-bold">STABLE</span>
+                                <span class="px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-mono text-[8px] border border-emerald-500/20 font-bold">LAPANG 🟢</span>
                             </div>
                         </div>
 
-                        <div class="bg-[#161f38] p-2 rounded-xl text-center text-[9px] text-slate-400 border border-slate-800/60">
-                            Metrics sourced directly via local active client nodes
+                        <div class="bg-slate-900 p-2 rounded-xl text-center text-[9px] text-slate-400 border border-slate-800/60 min-h-[38px] flex items-center justify-center">
+                            <p id="map-descriptor">Select any campus hub location node above to parse real-time data logs.</p>
                         </div>
                     </div>
                 `;
+            }
+        }
+
+        // Action Function: Screen 1 Recalibration Process Trigger
+        function triggerOptimization() {
+            if (isOptimizing) return;
+            isOptimizing = true;
+
+            const progressBar = document.getElementById('progress-bar');
+            const percentText = document.getElementById('gauge-percent');
+            const statusText = document.getElementById('gauge-status');
+            const logText = document.getElementById('log-text');
+            const logDot = document.getElementById('log-status-dot');
+            const container = document.getElementById('radial-container');
+
+            container.classList.add('pulse-slow');
+            logDot.className = "inline-block w-1.5 h-1.5 rounded-full bg-yellow-500 animate-ping";
+            statusText.innerText = "TUNING...";
+            statusText.className = "text-[8px] text-yellow-400 font-bold tracking-widest uppercase";
+
+            let current = 95;
+            let counter = 0;
+            
+            // Artificial drop to simulate scan
+            percentText.innerText = "42%";
+            progressBar.style.strokeDasharray = "100 264";
+            progressBar.style.stroke = "#ef233c";
+            logText.innerText = "Analyzing interference vectors on current access point profile...";
+
+            setTimeout(() => {
+                // Return smoothly to optimized state
+                percentText.innerText = "100%";
+                progressBar.style.strokeDasharray = "264 264";
+                progressBar.style.stroke = "#10b981";
+                statusText.innerText = "FULLY OPTIMIZED";
+                statusText.className = "text-[7px] text-emerald-400 font-bold tracking-wider uppercase";
+                logText.innerHTML = "<strong>Recalibration successful!</strong> All active clients shifted to cleared physical channel nodes safely.";
+                logDot.className = "inline-block w-1.5 h-1.5 rounded-full bg-emerald-500";
+                container.classList.remove('pulse-slow');
+                isOptimizing = false;
+            }, 1800);
+        }
+
+        // Action Function: Screen 2 AR Zone Detail Viewer Toggle
+        function toggleZoneDesc(zone) {
+            const desc = document.getElementById('ar-descriptor');
+            if (zone === 'red') {
+                desc.innerHTML = "<span class='text-red-400 font-semibold'>Red Zone:</span> High wave damping from adjacent structures. Avoid router setups here.";
+            } else if (zone === 'green') {
+                desc.innerHTML = "<span class='text-emerald-400 font-semibold'>Green Zone:</span> Open line-of-sight tracking. Best position for stable UKMFolio sessions.";
+            }
+        }
+
+        // Action Function: Screen 3 Map Hub Log Parser
+        function showGridLog(hub) {
+            const desc = document.getElementById('map-descriptor');
+            if (hub === 'ptsl') {
+                desc.innerHTML = "<strong>PTSL Library:</strong> 142 devices connected. Suggesting structural reallocation to local auxiliary channels.";
+            } else if (hub === 'pusanika') {
+                desc.innerHTML = "<strong>Pusanika Square:</strong> 64 devices connected. Signal bandwidth balancing operating efficiently.";
+            } else if (hub === 'ftsm') {
+                desc.innerHTML = "<strong>FTSM / FST:</strong> 18 devices connected. Maximum link speed variables achieved effortlessly.";
             }
         }
     </script>
-
-    <!-- UI Smooth Element Transition Injector Styles -->
-    <style>
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.98) translateY(2px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        .animate-fadeIn {
-            animation: fadeIn 0.2s ease-out forwards;
-        }
-    </style>
 </body>
 </html>
