@@ -199,10 +199,18 @@
             } else if (targetView === 'ar') {
                 viewport.innerHTML = `
                     <div class="flex flex-col justify-between h-full relative bg-slate-950 rounded-2xl overflow-hidden p-2 border border-slate-800">
-                        <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-[size:14px_14px]"></div>
-                        <div class="absolute inset-x-0 top-12 h-0.5 bg-purple-500/30 animate-scan z-20 shadow-md"></div>
+                        <!-- Top Navigation Bar to return to Module 1 Dashboard -->
+                        <div class="absolute top-0 inset-x-0 h-10 bg-black/40 backdrop-blur-md border-b border-slate-800 flex items-center px-3 z-30 justify-between">
+                            <button onclick="changeAppTab('dashboard')" class="text-slate-400 hover:text-white transition flex items-center text-[10px] font-bold tracking-wide">
+                                <i class="fa-solid fa-chevron-left mr-1.5 text-purple-400"></i> Dashboard
+                            </button>
+                            <span class="text-[9px] font-semibold text-slate-500 uppercase tracking-widest">Module 2</span>
+                        </div>
                         
-                        <div class="relative z-10 bg-black/70 p-1.5 rounded-lg text-center border border-purple-500/20 text-[8px] tracking-wider">
+                        <div class="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#f1f5f9_1px,transparent_1px),linear-gradient(to_bottom,#f1f5f9_1px,transparent_1px)] bg-[size:14px_14px]"></div>
+                        <div class="absolute inset-x-0 top-16 h-0.5 bg-purple-500/30 animate-scan z-20 shadow-md"></div>
+                        
+                        <div class="relative z-10 bg-black/70 p-1.5 rounded-lg text-center border border-purple-500/20 text-[8px] tracking-wider mt-11">
                             <p class="text-purple-400 font-bold"><i class="fa-solid fa-expand mr-1"></i> AR CALIBRATION HOUSING SENSOR</p>
                         </div>
 
@@ -213,7 +221,7 @@
                             </div>
                         </div>
 
-                        <div onclick="toggleZoneDesc('green')" class="absolute top-24 right-6 z-30 flex flex-col items-center cursor-pointer group/node">
+                        <div onclick="toggleZoneDesc('green')" class="absolute top-32 right-6 z-30 flex flex-col items-center cursor-pointer group/node">
                             <div class="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/80 flex items-center justify-center text-center relative active:scale-90 transition shadow-lg">
                                 <span class="text-[8px] font-bold text-white tracking-wide leading-tight">GREEN ZONE<br><span class="text-emerald-300 text-[7px] font-semibold">Clear Area</span></span>
                                 <div class="absolute -inset-1 rounded-full border border-emerald-400/30 animate-ping"></div>
@@ -227,8 +235,16 @@
                 `;
             } else if (targetView === 'map') {
                 viewport.innerHTML = `
-                    <div class="flex flex-col justify-between h-full">
-                        <div class="text-center mt-3">
+                    <div class="flex flex-col justify-between h-full relative">
+                        <!-- Top Navigation Bar to return to Module 1 Dashboard -->
+                        <div class="absolute top-0 inset-x-0 h-10 bg-slate-900/60 backdrop-blur-md border-b border-slate-800 flex items-center px-3 z-30 justify-between">
+                            <button onclick="changeAppTab('dashboard')" class="text-slate-400 hover:text-white transition flex items-center text-[10px] font-bold tracking-wide">
+                                <i class="fa-solid fa-chevron-left mr-1.5 text-emerald-400"></i> Dashboard
+                            </button>
+                            <span class="text-[9px] font-semibold text-slate-500 uppercase tracking-widest">Module 3</span>
+                        </div>
+
+                        <div class="text-center mt-13">
                             <h4 class="font-bold text-xs tracking-wider text-slate-200">UKM Density Grid</h4>
                             <p class="text-[8px] font-bold text-emerald-400 tracking-wider uppercase mt-0.5">Crowdsourced Channel Map</p>
                         </div>
