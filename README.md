@@ -35,9 +35,9 @@
                         <!-- DEFAULT INTERFACE: SCREEN 1 (Automated Optimization) -->
                         <div class="flex flex-col justify-between h-full animate-fadeIn">
                             <div class="text-center mt-3">
-                                <h4 class="font-bold text-sm tracking-wide text-slate-200">WiFi Optimization System</h4>
+                                <h4 class="font-bold text-sm tracking-wide text-slate-200"> Smart WiFi Optimization System</h4>
                                 <p class="text-[9px] font-semibold text-blue-400 tracking-wider uppercase mt-0.5">
-                                    <i class="fa-solid fa-building-columns mr-1"></i> Kolej Keris Mas (KKM)
+                                    <i class="fa-solid fa-building-columns mr-1"></i> Kolej Pendeta Za'ba (KPZ)
                                 </p>
                             </div>
                             
