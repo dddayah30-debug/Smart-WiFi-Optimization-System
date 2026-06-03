@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,12 +22,16 @@
 </head>
 <body class="bg-[#070a13] text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-center items-center p-4">
 
+    <!-- Interactive Workspace Container -->
     <div class="w-full max-w-4xl bg-[#111827] rounded-3xl p-6 md:p-8 border border-slate-800 shadow-2xl">
         <div class="grid md:grid-cols-12 gap-8 items-center">
             
+            <!-- COLUMN 1: FULLY INTERACTIVE SMARTPHONE VIEWPORT (5 Columns) -->
             <div class="md:col-span-5 flex justify-center">
+                <!-- Outer Phone Frame with Smooth Clickable Actions -->
                 <div class="w-[290px] h-[570px] bg-[#030712] rounded-[42px] border-[6px] border-slate-800 shadow-[0_0_40px_rgba(37,99,235,0.15)] relative p-3 flex flex-col justify-between overflow-hidden group">
                     
+                    <!-- Top Dynamic Island / Notch -->
                     <div class="absolute top-0 inset-x-0 h-6 bg-[#030712] z-40 flex justify-between items-center px-6 text-[9px] font-mono text-slate-400 pointer-events-none">
                         <span>9:41</span>
                         <div class="w-24 h-4 bg-black rounded-b-xl absolute left-1/2 -translate-x-1/2 top-0"></div>
@@ -38,16 +42,20 @@
                         </div>
                     </div>
                     
+                    <!-- LIVE APP VIEWPORT TERMINAL -->
                     <div id="phone-screen" class="h-full flex flex-col justify-between pt-6 pb-8 transition-all duration-300">
+                        <!-- SCREEN 1 CONTAINER (DEFAULT ACTIVE CONTAINER) -->
                         <div id="screen-content" class="flex flex-col justify-between h-full">
                             
+                            <!-- App Inner Header -->
                             <div class="text-center mt-3">
                                 <h4 class="font-bold text-xs tracking-wider text-slate-200">WiFi Optimizer</h4>
                                 <p class="text-[9px] font-semibold text-blue-400 tracking-wider uppercase mt-0.5">
-                                    <i class="fa-solid fa-building-columns mr-1"></i> Kolej Pendeta Za'ba (KPZ)
+                                    <i class="fa-solid fa-building-columns mr-1"></i> Pendeta Za'ba College (KPZ)
                                 </p>
                             </div>
                             
+                            <!-- Interactive Center Gauge Element -->
                             <div class="flex flex-col items-center justify-center my-auto relative">
                                 <div id="radial-container" class="relative w-36 h-36 flex items-center justify-center cursor-pointer active:scale-95 transition-transform duration-150" onclick="triggerOptimization()">
                                     <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
@@ -62,6 +70,7 @@
                                 <p class="text-[9px] text-slate-500 mt-2 pointer-events-none animate-pulse">👇 Tap circle to recalibrate</p>
                             </div>
 
+                            <!-- Dynamic Log Activity Center -->
                             <div class="space-y-2">
                                 <div id="log-card" class="bg-slate-900/90 p-3 rounded-xl text-[11px] border border-slate-800 shadow-inner min-h-[75px] flex flex-col justify-center">
                                     <div class="flex justify-between items-center mb-0.5">
@@ -71,6 +80,7 @@
                                     <p id="log-text" class="text-slate-400 text-[10px] leading-tight">System managing micro-channels dynamically. Line clear.</p>
                                 </div>
                                 
+                                <!-- Inside-App Navigation Controls -->
                                 <div class="grid grid-cols-2 gap-1.5 pt-1">
                                     <button onclick="changeAppTab('ar')" class="bg-slate-900 border border-slate-800 hover:bg-slate-800 active:scale-95 transition text-[10px] py-1.5 rounded-lg text-slate-300 font-medium">
                                         <i class="fa-solid fa-camera mr-1 text-purple-400"></i> AR View
@@ -86,6 +96,7 @@
                 </div>
             </div>
 
+            <!-- COLUMN 2: EXTERNAL DECK SWITCH PANEL CONTROLS (7 Columns) -->
             <div class="md:col-span-7 space-y-4">
                 <div class="mb-2">
                     <span class="text-[10px] font-bold tracking-widest text-blue-500 bg-blue-500/10 px-2.5 py-1 rounded-md border border-blue-500/20 uppercase">Interactive Pitch Module</span>
@@ -93,6 +104,7 @@
                     <p class="text-xs text-slate-400 mt-0.5">Test real-time operations directly on the viewport device profile container framework layout.</p>
                 </div>
 
+                <!-- Controller Button Set 1 -->
                 <button onclick="changeAppTab('dashboard')" id="deck-tab-dashboard" class="w-full text-left p-4 rounded-xl bg-slate-800/80 border border-blue-500/40 transition-all flex items-center space-x-4 shadow-md">
                     <div class="w-9 h-9 rounded-lg bg-blue-600/10 flex items-center justify-center text-blue-400 font-bold text-sm"><i class="fa-solid fa-gauge-high"></i></div>
                     <div>
@@ -101,6 +113,7 @@
                     </div>
                 </button>
 
+                <!-- Controller Button Set 2 -->
                 <button onclick="changeAppTab('ar')" id="deck-tab-ar" class="w-full text-left p-4 rounded-xl bg-slate-900/40 border border-slate-800 hover:border-slate-700/50 transition-all flex items-center space-x-4">
                     <div class="w-9 h-9 rounded-lg bg-purple-600/10 flex items-center justify-center text-purple-400 font-bold text-sm"><i class="fa-solid fa-vr-cardboard"></i></div>
                     <div>
@@ -109,6 +122,7 @@
                     </div>
                 </button>
 
+                <!-- Controller Button Set 3 -->
                 <button onclick="changeAppTab('map')" id="deck-tab-map" class="w-full text-left p-4 rounded-xl bg-slate-900/40 border border-slate-800 hover:border-slate-700/50 transition-all flex items-center space-x-4">
                     <div class="w-9 h-9 rounded-lg bg-emerald-600/10 flex items-center justify-center text-emerald-400 font-bold text-sm"><i class="fa-solid fa-network-wired"></i></div>
                     <div>
@@ -121,6 +135,7 @@
         </div>
     </div>
 
+    <!-- DEVICE RENDERING & DYNAMIC INTERACTION SCRIPTS -->
     <script>
         let isOptimizing = false;
 
@@ -151,7 +166,7 @@
                     <div id="screen-content" class="flex flex-col justify-between h-full">
                         <div class="text-center mt-3">
                             <h4 class="font-bold text-xs tracking-wider text-slate-200">WiFi Optimizer</h4>
-                            <p class="text-[9px] font-semibold text-blue-400 tracking-wider uppercase mt-0.5"><i class="fa-solid fa-building-columns mr-1"></i> Kolej Pendeta Za'ba (KPZ)</p>
+                            <p class="text-[9px] font-semibold text-blue-400 tracking-wider uppercase mt-0.5"><i class="fa-solid fa-building-columns mr-1"></i> Pendeta Za'ba College (KPZ)</p>
                         </div>
                         <div class="flex flex-col items-center justify-center my-auto relative">
                             <div id="radial-container" class="relative w-36 h-36 flex items-center justify-center cursor-pointer active:scale-95 transition-transform duration-150" onclick="triggerOptimization()">
@@ -191,6 +206,7 @@
                             <p class="text-purple-400 font-bold"><i class="fa-solid fa-expand mr-1"></i> AR CALIBRATION HOUSING SENSOR</p>
                         </div>
 
+                        <!-- Clickable/Movable Drag Simulation Nodes -->
                         <div onclick="toggleZoneDesc('red')" class="absolute bottom-28 left-6 z-30 flex flex-col items-center cursor-pointer group/node">
                             <div class="w-14 h-14 rounded-full bg-red-500/20 border border-red-500/80 flex items-center justify-center relative text-center active:scale-90 transition shadow-lg">
                                 <span class="text-[8px] font-bold text-white tracking-wide">RED ZONE</span>
@@ -217,13 +233,14 @@
                             <p class="text-[8px] font-bold text-emerald-400 tracking-wider uppercase mt-0.5">Crowdsourced Channel Map</p>
                         </div>
                         
+                        <!-- Real-time Clickable Map Node Stack -->
                         <div class="space-y-2 my-auto px-1">
                             <div onclick="showGridLog('ptsl')" class="bg-slate-900/90 p-2 rounded-xl border border-slate-800 hover:border-red-500/30 cursor-pointer active:scale-[0.99] transition flex justify-between items-center text-[10px]">
                                 <div>
-                                    <p class="font-bold text-slate-200">Perpustakaan PTSL</p>
+                                    <p class="font-bold text-slate-200">PTSL Library</p>
                                     <p class="text-[8px] text-slate-500">Saturation high index</p>
                                 </div>
-                                <span class="px-1.5 py-0.5 rounded bg-red-500/10 text-red-400 font-mono text-[8px] border border-red-500/20 font-bold">SESAK 🔴</span>
+                                <span class="px-1.5 py-0.5 rounded bg-red-500/10 text-red-400 font-mono text-[8px] border border-red-500/20 font-bold">CONGESTED 🔴</span>
                             </div>
 
                             <div onclick="showGridLog('pusanika')" class="bg-slate-900/90 p-2 rounded-xl border border-slate-800 hover:border-yellow-500/30 cursor-pointer active:scale-[0.99] transition flex justify-between items-center text-[10px]">
@@ -231,15 +248,15 @@
                                     <p class="font-bold text-slate-200">Pusanika Hub</p>
                                     <p class="text-[8px] text-slate-500">Balanced dynamic load</p>
                                 </div>
-                                <span class="px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-400 font-mono text-[8px] border border-yellow-500/20 font-bold">SEDERHANA 🟡</span>
+                                <span class="px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-400 font-mono text-[8px] border border-yellow-500/20 font-bold">MODERATE 🟡</span>
                             </div>
 
                             <div onclick="showGridLog('ftsm')" class="bg-slate-900/90 p-2 rounded-xl border border-slate-800 hover:border-emerald-500/30 cursor-pointer active:scale-[0.99] transition flex justify-between items-center text-[10px]">
                                 <div>
-                                    <p class="font-bold text-slate-200">Fakulti FTSM / FST</p>
+                                    <p class="font-bold text-slate-200">Faculty (FTSM / FST)</p>
                                     <p class="text-[8px] text-slate-500">Channel structural nodes open</p>
                                 </div>
-                                <span class="px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-mono text-[8px] border border-emerald-500/20 font-bold">LAPANG 🟢</span>
+                                <span class="px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-mono text-[8px] border border-emerald-500/20 font-bold">STABLE 🟢</span>
                             </div>
                         </div>
 
